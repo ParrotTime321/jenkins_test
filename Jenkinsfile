@@ -3,8 +3,8 @@ pipeline {
     stages {
         stage("docker login") {
             steps {
-                echo " ============== docker login =================="
-                withCredentials([usernamePassword(credentialsId: 'a272b958-4f28-87ef-cdd02b722f7d', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                echo " ============== docker login ==================" // credentialsId = name of your credentials id in Jenkins
+                withCredentials([usernamePassword(credentialsId: 'xxxxxx', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     script {
                         def loginResult = sh(script: "docker login -u $USERNAME -p $PASSWORD", returnStatus: true)
                         if (loginResult != 0) {
@@ -18,9 +18,9 @@ pipeline {
         stage('Step1') {
             steps {
                 echo " ============== docker APACHE =================="
-                sh 'docker build -t eisgraus/apache:v3 .'
-                sh 'docker run -d -p 8448:80 eisgraus/apache:v3'
-                sh 'docker push eisgraus/apache:v3'
+                sh 'docker build -t xxxxxx .' 
+                sh 'docker run -d -p 8448:80 xxxxxx' // change "xxxxxx"
+                sh 'docker push xxxxxx'
                 echo " ============== docker APACHE completed ! =================="
             }
         }
