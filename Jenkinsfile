@@ -1,28 +1,27 @@
 pipeline {
     agent any
     stages {
-        stage("docker login") {
+        stage('Docker Login') { 
             steps {
-                echo " ============== docker login ==================" // credentialsId = name of your credentials id in Jenkins
-                withCredentials([usernamePassword(credentialsId: 'xxxxxx', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    script {
-                        def loginResult = sh(script: "docker login -u $USERNAME -p $PASSWORD", returnStatus: true)
-                        if (loginResult != 0) {
-                            error "Failed to log in to Docker Hub. Exit code: ${loginResult}"
-                        }
-                    }
+                script {
+                    dockerLogin()
                 }
-                echo " ============== docker login completed =================="
             }
         }
+        
         stage('Step1') {
             steps {
                 echo " ============== docker APACHE =================="
-                sh 'docker build -t xxxxxx .' 
-                sh 'docker run -d -p 8448:80 xxxxxx' // change "xxxxxx"
-                sh 'docker push xxxxxx'
+                sh 'docker build -t ievolved/kindofteam:v${BUILD_NUMBER} .' 
+                sh 'docker run -d -p 8448:80 ievolved/kindofteam:v${BUILD_NUMBER}'
+                sh 'docker push ievolved/kindofteam:v${BUILD_NUMBER}'
                 echo " ============== docker APACHE completed ! =================="
             }
         }
+    }
+}
+def dockerLogin() {
+    withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+        sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin"
     }
 }
