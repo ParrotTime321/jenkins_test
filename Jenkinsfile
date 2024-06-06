@@ -26,26 +26,22 @@ pipeline {
             }
         }
 
-        stage('Step1'){
-            steps {
-                script {
-                    sh 'sudo chmod -R 755 /home/ubuntu/jenkins_test'
-                    sh 'sudo chown -R jenkins:jenkins /home/ubuntu/jenkins_test'
-                }
-            }
-        }
+        // stage('Step1'){
+        //     steps {
+        //         script {
+        //             sh 'sudo chmod -R 755 /home/ubuntu/jenkins_test'
+        //             sh 'sudo chown -R jenkins:jenkins /home/ubuntu/jenkins_test'
+        //         }
+        //     }
+        // }
         stage('Step2') {
             steps {
                 dir("${WORKDIR}/jenkins_test") {
                     script {
                         echo " ============== docker APACHE =================="
-                        try {
                             sh 'docker build -t ievolved/kindofteam:v${BUILD_NUMBER} .'
                             sh 'docker run -d -p 8448:80 ievolved/kindofteam:v${BUILD_NUMBER}'
                             sh 'docker push ievolved/kindofteam:v${BUILD_NUMBER}'
-                        } catch (Exception e) {
-                            echo "Docker operations failed, but continuing the pipeline"
-                        }
                         echo " ============== docker APACHE completed ! =================="
                     }
                 }
