@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        WORKDIR = '/home/ubuntu'
+    }
     stages {
         stage('Docker Login') { 
             steps {
