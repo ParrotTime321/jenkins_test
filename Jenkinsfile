@@ -1,21 +1,25 @@
 pipeline {
     agent any
     stages {
-        stage('Hello') { // testing if jenkins has a rights for changing dirs
-            dir('/home/ubuntu/') {
-                steps {
+        stage('Hello') { 
+            steps {
+                dir('/home/ubuntu/') {
                     echo 'Hello World 2'
+                    sh 'whoami'
+                    sh 'pwd'
                 }
             }
         }
         stage('Shell1') {
             steps {
-                sh 'ls /etc/netplan'
+                sh 'echo "Listing /etc/netplan:"'
+                sh 'ls -l /etc/netplan'
             }
         }
         stage('Shell2') {
             steps {
-                sh 'ls /home/'
+                sh 'echo "Listing /home:"'
+                sh 'ls -l /home/'
             }
         }
     }
