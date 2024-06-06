@@ -1,12 +1,13 @@
 FROM ubuntu:20.04
 
-WORKDIR /var/www/html  # Set working directory
+WORKDIR /var/www/html
 
-ENV DOCUMENT_ROOT=/var/www/html  # Define document root environment variable
+ENV DOCUMENT_ROOT=/var/www/html
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y apache2 --no-install-recommends
 
-COPY index.html $DOCUMENT_ROOT/  # Use environment variable in COPY
+COPY index.html $DOCUMENT_ROOT/
 
 EXPOSE 80
 
