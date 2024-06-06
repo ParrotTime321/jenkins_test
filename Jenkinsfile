@@ -18,6 +18,7 @@ pipeline {
                     script {
                         try {
                             sh "git clone git@github.com:ParrotTime321/jenkins_test.git"
+                            sh "git pull git@github.com:ParrotTime321/jenkins_test.git"
                         } catch (Exception e) {
                             echo "Git clone failed, but continuing the pipeline"
                         }
