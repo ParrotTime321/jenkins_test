@@ -4,10 +4,10 @@ RUN apt-get update && apt-get install -y apache2 --no-install-recommends
 
 COPY index.html /var/www/html/
 
-FROM apache:2.4.48-slim  # Switch to a minimal Apache image (removed extra space)
+FROM httpd:2.4.48-alpine  # Змінено базовий образ
 
-COPY --from=builder /var/www/html /var/www/html/
+COPY --from=builder /var/www/html /usr/local/apache2/htdocs/  # Змінено шлях копіювання
 
 EXPOSE 80
 
-CMD ["apache2", "-f", "/etc/apache2/apache2.conf"]
+CMD ["httpd", "-f", "/usr/local/apache2/conf/httpd.conf"]  # Змінено команду запуску Apache
