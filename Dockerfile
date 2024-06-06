@@ -1,12 +1,12 @@
-FROM ubuntu:20.04 AS builder
+FROM ubuntu:20.04
+
+WORKDIR /var/www/html  # Set working directory
+
+ENV DOCUMENT_ROOT=/var/www/html  # Define document root environment variable
 
 RUN apt-get update && apt-get install -y apache2 --no-install-recommends
 
-COPY index.html /var/www/html/
-
-FROM apache:2.4.48-slim  # Switch to a minimal Apache image (removed extra space)
-
-COPY --from=builder /var/www/html /var/www/html/
+COPY index.html $DOCUMENT_ROOT/  # Use environment variable in COPY
 
 EXPOSE 80
 
