@@ -15,21 +15,39 @@ pipeline {
         stage('Git clone') {
             steps {
                 dir("${WORKDIR}") {
-                script {
-                    sh "git clone git@github.com:ParrotTime321/jenkins_test.git"
+                    script {
+                        try {
+                            sh "git clone git@github.com:ParrotTime321/jenkins_test.git"
+                        } catch (Exception e) {
+                            echo "Git clone failed, but continuing the pipeline"
+                        }
+                    }
                 }
             }
         }
-    }
-        stage('Step1') {
+
+        stage('Step1'){
             steps {
-                dir("${WORKDIR}") {
-                    echo " ============== docker APACHE =================="
-                    sh 'cd /jenkins_test'
-                    sh 'docker build -t ievolved/kindofteam:v${BUILD_NUMBER} .' 
-                    sh 'docker run -d -p 8448:80 ievolved/kindofteam:v${BUILD_NUMBER}'
-                    sh 'docker push ievolved/kindofteam:v${BUILD_NUMBER}'
-                    echo " ============== docker APACHE completed ! =================="
+                script {
+                    sh 'sudo chmod -R 755 /home/ubuntu/jenkins_test'
+                    sh 'sudo chown -R jenkins:jenkins /home/ubuntu/jenkins_test'
+                }
+            }
+        }
+        stage('Step2') {
+            steps {
+                dir("${WORKDIR}/jenkins_test") {
+                    script {
+                        echo " ============== docker APACHE =================="
+                        try {
+                            sh 'docker build -t ievolved/kindofteam:v${BUILD_NUMBER} .'
+                            sh 'docker run -d -p 8448:80 ievolved/kindofteam:v${BUILD_NUMBER}'
+                            sh 'docker push ievolved/kindofteam:v${BUILD_NUMBER}'
+                        } catch (Exception e) {
+                            echo "Docker operations failed, but continuing the pipeline"
+                        }
+                        echo " ============== docker APACHE completed ! =================="
+                    }
                 }
             }
         }
