@@ -4,9 +4,9 @@ RUN apt-get update && apt-get install -y apache2 --no-install-recommends
 
 COPY index.html /var/www/html/
 
-FROM httpd:2.4.48-slim
+FROM httpd:2.4.48
 
-COPY --from=builder --chown=www-data:www-data /var/www/html/ /usr/local/apache2/htdocs/
+COPY --from=builder /var/www/html /var/www/html/
 
 EXPOSE 80
 
