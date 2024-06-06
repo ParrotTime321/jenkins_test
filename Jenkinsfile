@@ -39,6 +39,7 @@ pipeline {
                 dir("${WORKDIR}/jenkins_test") {
                     script {
                         echo " ============== docker APACHE =================="
+                            sh 'pwd'
                             sh 'docker build -t ievolved/kindofteam:v${BUILD_NUMBER} .'
                             sh 'docker run -d -p 8448:80 ievolved/kindofteam:v${BUILD_NUMBER}'
                             sh 'docker push ievolved/kindofteam:v${BUILD_NUMBER}'
