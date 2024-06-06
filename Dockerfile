@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y apache2 --no-install-recommends
 
 COPY index.html /var/www/html/
 
-FROM httpd:2.4.48-alpine  # Змінено базовий образ
+FROM httpd:2.4.48  # Змінено базовий образ
 
 COPY --from=builder /var/www/html /usr/local/apache2/htdocs/  # Змінено шлях копіювання
 
